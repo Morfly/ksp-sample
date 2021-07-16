@@ -13,9 +13,10 @@ interface MyAmazingFunction {
 
 
 fun main() {
+    functionWithoutArgs()
     myAmazingFunction(
-        arg1 = "String",
-        arg2 = emptyList<String>(),
-        arg3 = emptyList()
+        arg1 = "value",
+        arg2 = listOf(1, 2.0, "3"),
+        arg3 = listOf(mapOf("key1" to "value1"))
     )
 }
