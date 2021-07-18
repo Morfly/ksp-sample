@@ -11,7 +11,7 @@ kotlin.sourceSets.main {
 
 ksp {
     // passing an argument to our processor
-    arg("ignoreGenericArgs", "false")
+    //arg("ignoreGenericArgs", "true")
 }
 
 dependencies {

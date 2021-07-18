@@ -95,17 +95,18 @@ class FunctionProcessor(
             // Getting the value of the 'name' argument.
             val functionName = nameArgument.value as String
 
-            // Processing each property of the interface, annotated with @Function.
-            val properties = classDeclaration.getAllProperties().filter { it.validate() }.toList()
+            // Getting the list of member properties of the annotated interface.
+            val properties: Sequence<KSPropertyDeclaration> = classDeclaration.getAllProperties()
+                .filter { it.validate() }
 
             // Generating function signature.
             file += "\n"
-            if (properties.isNotEmpty()) {
+            if (properties.iterator().hasNext()) {
                 file += "fun $functionName(\n"
 
                 // Iterating through each property to translate them to function arguments.
-                properties.forEach {
-                    visitPropertyDeclaration(it, data = Unit)
+                properties.forEach { prop ->
+                    visitPropertyDeclaration(prop, Unit)
                 }
                 file += ") {\n"
 
@@ -125,14 +126,15 @@ class FunctionProcessor(
             file += "    $argumentName: "
 
             // Generating argument type.
-            val resolvedType = property.type.resolve()
+            val resolvedType: KSType = property.type.resolve()
             file += resolvedType.declaration.qualifiedName?.asString() ?: run {
                 logger.error("Invalid property type", property)
                 return
             }
+            file += if (resolvedType.nullability == Nullability.NULLABLE) "?" else ""
 
             // Generating generic parameters if any
-            val genericArguments = property.type.element?.typeArguments ?: emptyList()
+            val genericArguments: List<KSTypeArgument> = property.type.element?.typeArguments ?: emptyList()
             visitTypeArguments(genericArguments)
 
             file += ",\n"
@@ -156,7 +158,7 @@ class FunctionProcessor(
                 return
             }
 
-            when (val variance = typeArgument.variance) {
+            when (val variance: Variance = typeArgument.variance) {
                 // <*>
                 STAR -> {
                     file += "*"
@@ -171,14 +173,14 @@ class FunctionProcessor(
                     // do nothing
                 }
             }
-            val resolvedType = typeArgument.type?.resolve()
+            val resolvedType: KSType? = typeArgument.type?.resolve()
             file += resolvedType?.declaration?.qualifiedName?.asString() ?: run {
                 logger.error("Invalid type argument", typeArgument)
                 return
             }
             file += if (resolvedType?.nullability == Nullability.NULLABLE) "?" else ""
 
-            val genericArguments = typeArgument.type?.element?.typeArguments ?: emptyList()
+            val genericArguments: List<KSTypeArgument> = typeArgument.type?.element?.typeArguments ?: emptyList()
             visitTypeArguments(genericArguments)
         }
     }
