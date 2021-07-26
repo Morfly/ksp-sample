@@ -10,7 +10,7 @@ kotlin.sourceSets.main {
 }
 
 ksp {
-    // passing an argument to our processor
+    // passing an argument to the symbol processor
     //arg("ignoreGenericArgs", "true")
 }
 
