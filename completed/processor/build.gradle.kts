@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
 }
 
-// gradle.properties
+// Versions are declared in 'gradle.properties' file
 val kspVersion: String by project
 
 dependencies {
