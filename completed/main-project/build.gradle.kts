@@ -3,6 +3,7 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+// Makes generated code visible to IDE
 kotlin.sourceSets.main {
     kotlin.srcDirs(
         file("$buildDir/generated/ksp/main/kotlin"),
@@ -10,8 +11,9 @@ kotlin.sourceSets.main {
 }
 
 ksp {
-    // passing an argument to the symbol processor
-    //arg("ignoreGenericArgs", "true")
+    // Passing an argument to the symbol processor.
+    // Change value to "true" in order to apply the argument.
+    arg("ignoreGenericArgs", "false")
 }
 
 dependencies {

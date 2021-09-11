@@ -13,10 +13,13 @@ interface MyAmazingFunction {
 
 
 fun main() {
+    // Calling first generated function
     functionWithoutArgs()
+
+    // Calling second generated function
     myAmazingFunction(
-        arg1 = "value",
-        arg2 = listOf(1, 2, null),
-        arg3 = listOf(mapOf("key1" to "value1"))
+        arg1 = "sample value",
+        arg2 = listOf(0, 1, null),
+        arg3 = listOf(mapOf("sample key" to 0))
     )
 }
