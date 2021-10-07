@@ -1,6 +1,11 @@
 plugins {
     kotlin("jvm")
     id("com.google.devtools.ksp")
+    application
+}
+
+application {
+    mainClass.set("com.morfly.MainKt")
 }
 
 // Makes generated code visible to IDE
