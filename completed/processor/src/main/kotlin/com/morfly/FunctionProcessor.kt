@@ -58,7 +58,10 @@ class FunctionProcessor(
         // The generated file will be located at:
         // build/generated/ksp/main/kotlin/com/morfly/GeneratedFunctions.kt
         val file = codeGenerator.createNewFile(
-            dependencies = Dependencies(false),
+            // Make sure to associate the generated file with sources to keep/maintain it across incremental builds.
+            // Learn more about incremental processing in KSP from the official docs:
+            // https://github.com/google/ksp/blob/main/docs/incremental.md
+            dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
             packageName = "com.morfly",
             fileName = "GeneratedFunctions"
         )
