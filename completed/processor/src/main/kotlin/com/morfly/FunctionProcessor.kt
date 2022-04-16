@@ -131,11 +131,13 @@ class FunctionProcessor(
                 logger.error("Invalid property type", property)
                 return
             }
-            file += if (resolvedType.nullability == Nullability.NULLABLE) "?" else ""
 
             // Generating generic parameters if any
             val genericArguments: List<KSTypeArgument> = property.type.element?.typeArguments ?: emptyList()
             visitTypeArguments(genericArguments)
+
+            // Handling nullability
+            file += if (resolvedType.nullability == Nullability.NULLABLE) "?" else ""
 
             file += ",\n"
         }
@@ -178,10 +180,13 @@ class FunctionProcessor(
                 logger.error("Invalid type argument", typeArgument)
                 return
             }
-            file += if (resolvedType?.nullability == Nullability.NULLABLE) "?" else ""
 
+            // Generating nested generic parameters if any
             val genericArguments: List<KSTypeArgument> = typeArgument.type?.element?.typeArguments ?: emptyList()
             visitTypeArguments(genericArguments)
+
+            // Handling nullability
+            file += if (resolvedType?.nullability == Nullability.NULLABLE) "?" else ""
         }
     }
 }
