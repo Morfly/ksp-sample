@@ -60,7 +60,7 @@ class FunctionProcessor(
         val file = codeGenerator.createNewFile(
             // Make sure to associate the generated file with sources to keep/maintain it across incremental builds.
             // Learn more about incremental processing in KSP from the official docs:
-            // https://github.com/google/ksp/blob/main/docs/incremental.md
+            // https://kotlinlang.org/docs/ksp-incremental.html
             dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
             packageName = "com.morfly",
             fileName = "GeneratedFunctions"
@@ -118,7 +118,7 @@ class FunctionProcessor(
                 file += "fun $functionName() {\n"
             }
 
-            // Generating function body
+            // Generating function body.
             file += "    println(\"Hello from $functionName\")\n"
             file += "}\n"
         }
@@ -134,11 +134,13 @@ class FunctionProcessor(
                 logger.error("Invalid property type", property)
                 return
             }
-            file += if (resolvedType.nullability == Nullability.NULLABLE) "?" else ""
 
-            // Generating generic parameters if any
+            // Generating generic parameters if any.
             val genericArguments: List<KSTypeArgument> = property.type.element?.typeArguments ?: emptyList()
             visitTypeArguments(genericArguments)
+
+            // Handling nullability.
+            file += if (resolvedType.nullability == Nullability.NULLABLE) "?" else ""
 
             file += ",\n"
         }
@@ -173,7 +175,7 @@ class FunctionProcessor(
                     file += " "
                 }
                 INVARIANT -> {
-                    // do nothing
+                    // Do nothing.
                 }
             }
             val resolvedType: KSType? = typeArgument.type?.resolve()
@@ -181,10 +183,13 @@ class FunctionProcessor(
                 logger.error("Invalid type argument", typeArgument)
                 return
             }
-            file += if (resolvedType?.nullability == Nullability.NULLABLE) "?" else ""
 
+            // Generating nested generic parameters if any.
             val genericArguments: List<KSTypeArgument> = typeArgument.type?.element?.typeArguments ?: emptyList()
             visitTypeArguments(genericArguments)
+
+            // Handling nullability.
+            file += if (resolvedType?.nullability == Nullability.NULLABLE) "?" else ""
         }
     }
 }
