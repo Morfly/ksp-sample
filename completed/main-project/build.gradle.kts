@@ -1,6 +1,12 @@
 plugins {
     kotlin("jvm")
     id("com.google.devtools.ksp")
+    application
+}
+
+// Allows running from command line using  ./gradlew :main-project:run
+application {
+    mainClass.set("com.morfly.MainKt")
 }
 
 // Makes generated code visible to IDE
