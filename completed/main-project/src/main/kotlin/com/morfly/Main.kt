@@ -13,10 +13,10 @@ interface MyAmazingFunction {
 
 
 fun main() {
-    // Calling first generated function
+    // Calling first generated function.
     functionWithoutArgs()
 
-    // Calling second generated function
+    // Calling second generated function.
     myAmazingFunction(
         arg1 = "sample value",
         arg2 = listOf(0, 1, null),
